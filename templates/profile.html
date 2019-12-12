@@ -1,0 +1,34 @@
+{% extends "layout.html" %} {% block content %} {% if not user %}
+
+<div class="container">
+  <div class="mt-1">
+    <h1>Profile</h1>
+  </div>
+  <p class="lead">You need to log in to see this page</p>
+
+  <a type="button" class="btn btn-default" href="/auth">Login</a>
+</div>
+
+{% else %}
+
+<div class="container">
+  <h1>Hi {{ user.display_name }}!</h1>
+
+  <p class="lead">Please click on the search icon above to start browsing.</p>
+
+  <hr class="half-rule" />
+
+  <div class="row">
+    <div class="col-sm-4">
+      <section class="sec">
+        {% if user.images %}
+        <img src="{{user.images[0].url}}" class="img-square" />
+        {% else %}
+        <img src="http://bit.ly/2nXRRfX" class="img-square" />
+        {% endif %}
+      </section>
+    </div>
+
+    {% endif %} {% endblock %}
+  </div>
+</div>
