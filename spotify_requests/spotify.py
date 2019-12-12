@@ -113,21 +113,22 @@ def authorize(auth_token):
     auth_header = {"Authorization": "Bearer {}".format(access_token)}
     return auth_header
 
+
 # ---------------- 2. ARTISTS ------------------------
 # https://developer.spotify.com/web-api/artist-endpoints/
-
-
 GET_ARTIST_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, 'artists')  # /<id>
-
-
 # https://developer.spotify.com/web-api/get-artist/
+
+
 def get_artist(artist_id):
-    url = "{}/{id}".format(GET_ARTIST_ENDPOINT, id=artist_id)
+    url = "{}/{id}".format(GET_ARTIST_ENDPOINT,
+                           id=artist_id)
     resp = requests.get(url)
     return resp.json()
 
-
 # https://developer.spotify.com/web-api/get-several-artists/
+
+
 def get_several_artists(list_of_ids):
     url = "{}/?ids={ids}".format(GET_ARTIST_ENDPOINT,
                                  ids=','.join(list_of_ids))
@@ -138,7 +139,8 @@ def get_several_artists(list_of_ids):
 
 
 def get_artists_albums(artist_id):
-    url = "{}/{id}/albums".format(GET_ARTIST_ENDPOINT, id=artist_id)
+    url = "{}/{id}/albums".format(GET_ARTIST_ENDPOINT,
+                                  id=artist_id)
     resp = requests.get(url)
     return resp.json()
 
@@ -146,7 +148,8 @@ def get_artists_albums(artist_id):
 
 
 def get_artists_top_tracks(artist_id, country='US'):
-    url = "{}/{id}/top-tracks".format(GET_ARTIST_ENDPOINT, id=artist_id)
+    url = "{}/{id}/top-tracks".format(GET_ARTIST_ENDPOINT,
+                                      id=artist_id)
     myparams = {'country': country}
     resp = requests.get(url, params=myparams)
     return resp.json()
@@ -155,7 +158,8 @@ def get_artists_top_tracks(artist_id, country='US'):
 
 
 def get_related_artists(artist_id):
-    url = "{}/{id}/related-artists".format(GET_ARTIST_ENDPOINT, id=artist_id)
+    url = "{}/{id}/related-artists".format(
+        GET_ARTIST_ENDPOINT, id=artist_id)
     resp = requests.get(url)
     return resp.json()
 
@@ -165,14 +169,16 @@ def get_related_artists(artist_id):
 
 SEARCH_ENDPOINT = "{}/{}".format(SPOTIFY_API_URL, 'search')
 
-
 # https://developer.spotify.com/web-api/search-item/
-def search(search_type, name, auth_header):
+
+
+def search(search_type, name, auth_header, performer):
     if search_type not in ['artist', 'track', 'album', 'playlist']:
         print('invalid type')
         return None
+    query = name + " " + performer
     myparams = {'type': search_type}
-    myparams['q'] = name
+    myparams['q'] = query
     resp = requests.get(SEARCH_ENDPOINT, params=myparams, headers=auth_header)
     return resp.json()
 

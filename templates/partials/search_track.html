@@ -15,7 +15,7 @@
 
     <td>
       {% for artist in track.artists %}
-      <a href="{{ url_for('artist', id=artist.id) }}"> {{ artist.name }} </a>
+      <a href="{{ track.external_urls.spotify }}"> {{ artist.name }} </a>
       {% endfor %}
     </td>
 

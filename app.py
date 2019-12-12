@@ -49,8 +49,9 @@ def search():
     try:
         search_type = 'track'
         name = request.args['name']
-        #sorted_performers = find_recordings.find_main(name)
-        return make_search(search_type, name, auth_header)
+        sorted_performers = find_recordings.find_main(name)
+        print(sorted_performers)
+        return make_search(search_type, name, auth_header, sorted_performers)
     except:
         return render_template('search.html')
 
@@ -62,12 +63,14 @@ def search_item(search_type, name):
     return make_search(search_type, name, auth_header)
 
 
-def make_search(search_type, name, auth_header):
-    data = spotify.search(search_type, name, auth_header)
-    api_url = data[search_type + 's']['href']
-    items = data[search_type + 's']['items']
-    # pick the most accurate result
-    item_list = [items[0]]
+def make_search(search_type, name, auth_header, sorted_performers):
+    item_list = []
+    for performer in sorted_performers:
+        data = spotify.search(search_type, name, auth_header, performer)
+        api_url = data[search_type + 's']['href']
+        items = data[search_type + 's']['items']
+        item_list.append(items[0])
+
     return render_template('search.html',
                            name=name,
                            results=item_list,
@@ -77,28 +80,25 @@ def make_search(search_type, name, auth_header):
 
 @app.route('/artist/<id>')
 def artist(id):
-    artist = spotify.get_artist(id)
-
-    if artist['images']:
-        image_url = artist['images'][0]['url']
-    else:
+    try:
+        artist = spotify.get_artist(id)
         image_url = 'http://bit.ly/2nXRRfX'
 
-    tracksdata = spotify.get_artist_top_tracks(id)
-    tracks = tracksdata['tracks']
+        tracksdata = spotify.get_artist_top_tracks(id)
+        tracks = tracksdata['tracks']
 
-    related = spotify.get_related_artists(id)
-    related = related['artists']
+        related = spotify.get_related_artists(id)
+        related = related['artists']
 
-    return render_template('artist.html',
-                           artist=artist,
-                           related_artists=related,
-                           image_url=image_url,
-                           tracks=tracks)
+        return render_template('artist.html',
+                               artist=artist,
+                               related_artists=related,
+                               image_url=image_url,
+                               tracks=tracks)
+    except:
+        return render_template('search.html')
 
-######
-# COULD DELETE
-######
+
 @app.route('/profile')
 def profile():
     if 'auth_header' in session:
@@ -121,14 +121,6 @@ def profile():
     return render_template('profile.html')
 
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
-
-
-######
-# COULD DELETE
-######
 @app.route('/featured_playlists')
 def featured_playlists():
     if 'auth_header' in session:
