@@ -50,7 +50,6 @@ def search():
         search_type = 'track'
         name = request.args['name']
         sorted_performers = find_recordings.find_main(name)
-        print(sorted_performers)
         return make_search(search_type, name, auth_header, sorted_performers)
     except:
         return render_template('search.html')
@@ -65,11 +64,17 @@ def search_item(search_type, name):
 
 def make_search(search_type, name, auth_header, sorted_performers):
     item_list = []
-    for performer in sorted_performers:
-        data = spotify.search(search_type, name, auth_header, performer)
+    if sorted_performers:
+        for performer in sorted_performers:
+            data = spotify.search(search_type, name, auth_header, performer)
+            api_url = data[search_type + 's']['href']
+            items = data[search_type + 's']['items']
+            item_list.append(items[0])
+    else:
+        data = spotify.search(search_type, name, auth_header, "")
         api_url = data[search_type + 's']['href']
         items = data[search_type + 's']['items']
-        item_list.append(items[0])
+        item_list = items
 
     return render_template('search.html',
                            name=name,
