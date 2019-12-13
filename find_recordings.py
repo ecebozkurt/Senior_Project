@@ -3,12 +3,10 @@ import scrape
 import os
 
 
-# TODO Description
 def make_dict(performers):
     return dict.fromkeys(performers, 0)
 
 
-# TODO Description
 def count_performers(data_arr, performers, piece, performer_freq):
     for item in data_arr:
         # if the piece is in that particular paragraph, then look for performers mentioned
@@ -20,14 +18,12 @@ def count_performers(data_arr, performers, piece, performer_freq):
     return performer_freq
 
 
-# TODO Description
 def make_ranking(dictionary):
     dictionary = {k: v for k, v in dictionary.items() if v != 0}
     sorted_arr = sorted(dictionary, key=dictionary.get, reverse=True)
     return sorted_arr
 
 
-# TODO Description
 def find_main(piece):
     performer_list, performer_last_list, label_list, ensemble_list = make_database.get_strings()
 

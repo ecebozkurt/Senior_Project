@@ -4,7 +4,6 @@ import re
 import unidecode
 
 
-# TODO Description
 def clean_html_text(http_response):
     soup = BeautifulSoup(http_response.text, 'html.parser')
     # get rid of Javascript and CSS elements
@@ -15,7 +14,6 @@ def clean_html_text(http_response):
     return normal
 
 
-# TODO Description
 def get_data(url, type_list):
     http_response = requests.get(url)
     list_str = clean_html_text(http_response)
@@ -30,14 +28,12 @@ def get_data(url, type_list):
     return list_str
 
 
-# TODO Description
 def separate_last_name(list_str):
     # get their last names for easier search
     list_str_last = re.sub(r',.+\n', '', list_str)
     return list_str, list_str_last
 
 
-# TODO Description
 def make_list(string):
     str_list = string.split("\n")
     new_str_list = []
@@ -48,18 +44,20 @@ def make_list(string):
     return new_str_list
 
 
-# TODO Description
 def switch_last_first(name_list):
     fl = [" ".join(n.split(", ")[::-1]) for n in name_list]
     return fl
 
 
-# TODO Description
 def get_strings():
-    conductor_str = get_data("https://www.arkivmusic.com/classical/NameList?featured=1&role_wanted=3", "Conductors")
-    label_str = get_data("https://www.arkivmusic.com/classical/MusicList?featured=1&role_wanted=6", "Labels")
-    performer_str = get_data("https://www.arkivmusic.com/classical/NameList?featured=1&role_wanted=2", "Performers")
-    ensemble_str = get_data("https://www.arkivmusic.com/classical/NameList?featured=1&role_wanted=4", "Ensembles")
+    conductor_str = get_data(
+        "https://www.arkivmusic.com/classical/NameList?featured=1&role_wanted=3", "Conductors")
+    label_str = get_data(
+        "https://www.arkivmusic.com/classical/MusicList?featured=1&role_wanted=6", "Labels")
+    performer_str = get_data(
+        "https://www.arkivmusic.com/classical/NameList?featured=1&role_wanted=2", "Performers")
+    ensemble_str = get_data(
+        "https://www.arkivmusic.com/classical/NameList?featured=1&role_wanted=4", "Ensembles")
 
     performer_str += conductor_str
     performer_str, performer_str_last = separate_last_name(performer_str)
@@ -71,10 +69,3 @@ def get_strings():
     ensemble_list = make_list(ensemble_str)
 
     return performer_list, performer_last_list, label_list, ensemble_list
-
-
-
-
-
-
-

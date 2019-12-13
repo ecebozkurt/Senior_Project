@@ -4,14 +4,12 @@ import unidecode
 import os
 
 
-# TODO Description
 def construct_url(piece):
     user_keywords = "best recording " + piece
     user_keywords = user_keywords.replace(" ", "+")
     return "https://www.google.com/search?q=" + user_keywords
 
 
-# TODO Description
 def http_requests(url):
     # get rid of any special characters that might appear in the link
     http_response = requests.get(url)
@@ -21,7 +19,6 @@ def http_requests(url):
         return "Try a different URL"
 
 
-# TODO Description
 def parse_google_search(http_response):
     soup = BeautifulSoup(http_response.text, 'html.parser')
 
@@ -46,7 +43,6 @@ def parse_google_search(http_response):
     return search_results
 
 
-# TODO Description
 def clean_html_text(http_response):
     soup = BeautifulSoup(http_response.text, 'html.parser')
     # get rid of Javascript and CSS elements
@@ -57,7 +53,6 @@ def clean_html_text(http_response):
     return normal
 
 
-# TODO Description
 def gramophone_clean(text):
     # for Deutsche Gramophon Remove everything after the Follow us text.
     text, sep, tail = text.partition('Follow us')
@@ -66,7 +61,6 @@ def gramophone_clean(text):
     return sep + text
 
 
-# TODO Description
 def talk_classical_clean(text):
     strip_arr = ["View Profile", "View Forum Posts", "View Blog Entries", "Reply With Quote", "Senior Member",
                  "Junior Member", "Banned", "Visit Homepage"]
@@ -80,7 +74,8 @@ def talk_classical_clean(text):
     text_arr = text.split("Join Date")
     new_text_arr = []
     for item in text_arr:
-        item = item.replace('\n', '').replace('\t', ' ').replace('\r', ' ').strip()
+        item = item.replace('\n', '').replace(
+            '\t', ' ').replace('\r', ' ').strip()
         items = item.split("Likes (Received)")
         [new_text_arr.append(i) for i in items]
 
@@ -125,14 +120,14 @@ def talk_classical_clean(text):
             wo_date_arr.append(item_parts[0])
 
     final_arr = []
-    [final_arr.append(item) for item in wo_date_arr if "Likes (Given)" not in item]
+    [final_arr.append(item)
+     for item in wo_date_arr if "Likes (Given)" not in item]
 
     # after we are done with getting rid of the unnecessary values, join the text delimited by \ns
     text = "\n".join(final_arr)
     return text
 
 
-# TODO Description
 def nyt_clean(text):
     strip_arr = ["Share This Page", "Continue reading the main story", "Advertisement", "Credit", "Associated Press",
                  "Photo" "Opt out or contact us anytime"]
@@ -153,7 +148,6 @@ def nyt_clean(text):
     return text
 
 
-# TODO Description
 def wfmt_clean(text):
     head, sep, text = text.partition("Share this Post")
     text, sep, tail = text.partition("Related Posts")
@@ -161,16 +155,15 @@ def wfmt_clean(text):
     return text
 
 
-# TODO Description
 def quora_clean(text):
     text_arr = text.split("views")
     final_arr = []
-    [final_arr.append(item) for item in text_arr if "Related Questions" not in item and "Upvoters" not in item]
+    [final_arr.append(
+        item) for item in text_arr if "Related Questions" not in item and "Upvoters" not in item]
     text = "\n\n".join(final_arr)
     return text
 
 
-# TODO Description
 def classicfm_clean(text):
     head, sep, text = text.partition("More Composers")
     text, sep, tail = text.partition("News")
@@ -178,7 +171,6 @@ def classicfm_clean(text):
     return text
 
 
-# TODO Description
 def spectator_clean(text):
     head, sep, text = text.partition("Whatsapp")
     text, sep, tail = text.partition("See also")
@@ -186,7 +178,6 @@ def spectator_clean(text):
     return text
 
 
-# TODO Description
 def classical_music_clean(text):
     head, sep, text = text.partition("Rating:")
     text, sep, tail = text.partition("Article Type")
@@ -194,7 +185,6 @@ def classical_music_clean(text):
     return text
 
 
-# TODO Description
 def look_for_piece(text, piece):
     piece_separate = piece.split(" ")
     for item in piece_separate:
@@ -205,7 +195,6 @@ def look_for_piece(text, piece):
     return True
 
 
-# TODO Description
 def write_to_file(piece, results):
     file_name = piece.replace(' ', "_") + ".txt"
     f = open(file_name, "a")
@@ -215,7 +204,6 @@ def write_to_file(piece, results):
     f.close()
 
 
-# TODO Description
 def make_directory(piece):
     dir_name = piece.replace(' ', "_")
     try:
@@ -226,7 +214,6 @@ def make_directory(piece):
         return
 
 
-# TODO Add Description
 def scrape_main(piece_name):
     # construct the google search url
     google_search_url = construct_url(piece_name)
@@ -269,7 +256,3 @@ def scrape_main(piece_name):
 
     # move back up to the parent directory
     os.chdir('..')
-
-
-
-
