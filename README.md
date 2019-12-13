@@ -11,3 +11,27 @@ However, in classical music, interpretations play a very important role. A poor 
 In this project, I aimed to create a Web Application that automates this selection process. The application takes the name and composer of the piece from the user, and retrieves the first page of the Google results associated with the piece. Then, the application parses these forums and reviews to get the most popular performers, and returns a ranking of recordings to the user. The user can click on these recordings and listen to them on Spotify, and add them to their playlists as they please.
 
 ### Instructions
+
+1. Make sure that your computer has python 3.x installed. You can check this by opening Terminal, and running the command `python --version`
+
+    If you don't, then install it by using Homebrew. 
+    
+    To do this, go to [https://brew.sh] and copy the command under the title 'Install Homebrew' into your Terminal and press Enter. Then follow the instructions through your Terminal. 
+    
+    After Homebrew has been installed, you can run the command `brew install python3` to get the latest version of python 3.x.
+
+2. Then get the latest version of pip by running `pip install --upgrade pip` in your Terminal.
+
+3. Download or Clone this Repository to your computer.
+
+4. Using the requirements.txt file provided in this repository, run the command 
+
+    ` pip install -r requirements.txt`
+
+    This will download all of the libraries you need in order to successfully run this program.
+
+5. Navigate into the folder that includes the .py files through your Terminal.
+
+6. Once you are in this folder, run `python3 app.py`
+
+7. Open your browser and load `127.0.0.1:8081` and start exploring the application!
